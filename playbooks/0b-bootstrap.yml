@@ -35,6 +35,7 @@
 - name: Setup further common packages (ntp, apt-cache-ng)
   hosts: kube_cluster
   pre_tasks:
+
     - name: Wait for devices accessibility
       # just to ensure that devices are up and running after bootstrap-run
       wait_for_connection:
@@ -42,12 +43,15 @@
         sleep: 5
         delay: 5
         timeout: 180
+
     - name: Disabling Swap
+      # Kubernetes dislikes swap memory
       service:
         name: dphys-swapfile
         enabled: false
         state: stopped
       become: true
+
   roles:
     - role: mrlesmithjr/ansible-ntp
     - role: mrlesmithjr/ansible-apt-cacher-ng
