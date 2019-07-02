@@ -104,7 +104,7 @@
                apply -f "{{ k8s_dashboard }}"
 
 - hosts: kube_master
-  name: Get necessary information about Kubernetes
+  name: Get necessary information about Kubernetes and Dashboard
   tasks:
     - name: Describe Secret for Service Account
       shell: kubectl --kubeconfig {{ k8s_admin_config }} -n kube-system get secret | grep kubernetes-admin | awk '{print $1}'
