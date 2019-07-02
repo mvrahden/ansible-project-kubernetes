@@ -102,13 +102,49 @@
                apply -f "{{ k8s_dashboard }}"
 
     - name: Describe Secret for Service Account
+      shell: kubectl --kubeconfig {{ k8s_admin_config }} -n kube-system get secret | grep kubernetes-admin | awk '{print $1}'
+      become: true
+      register: _kubernetes_admin_secret_name
+
+    - name: debug
+      debug:
+        msg: "{{ _kubernetes_admin_secret_name }}"
+      when: _kubernetes_admin_secret_name['stderr'] != ""
+
+    - name: Describe Secret for Service Account
       shell: >
              kubectl --kubeconfig {{ k8s_admin_config }} \
              -n kube-system \
-             describe secret $(kubectl -n kube-system get secret | grep kubernetes-admin | awk '{print $1}')
+             describe secret {{ _kubernetes_admin_secret_name['stdout'] }}
       become: true
       register: _kubernetes_admin_token
 
-    - name: Print the token
+    - name: Template the Token temporarily
+      template:
+        src: log/token.j2
+        dest: /tmp/token
+      become: true
+
+    - name: Fetch the /tmp/token file
+      fetch:
+        src: /tmp/token
+        dest: ../dist/
+        flat: true
+      become: true
+
+    - name: Remove the /tmp/token file
+      file:
+        path: /tmp/token
+        state: absent
+      become: true
+
+    - name: Get content of {{ k8s_admin_config }}
+      fetch:
+        src: "{{ k8s_admin_config }}"
+        dest: ../dist/
+        flat: true
+      become: true
+
+    - name: Print a final clue
       debug:
-        msg: "{{ _kubernetes_admin_token['stdout'] }}"
+        msg: "Please find the necessary files under the `./dist/`-directory."
