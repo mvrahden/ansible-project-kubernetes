@@ -1,6 +1,5 @@
 ---
-# inventory group
-k8s_cluster_group: kube_cluster
+k8s_cluster_group: kube_cluster # inventory group
 k8s_master: kube-r64-000
 k8s_users:
   - user: rock64
