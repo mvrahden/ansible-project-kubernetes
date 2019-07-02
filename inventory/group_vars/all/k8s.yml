@@ -29,6 +29,8 @@ k8s_users:
 
 k8s_version: 1.14.1 # not officially supported by dashboard!
 
+k8s_admin_config: /etc/kubernetes/admin.conf
+
 k8s_dashboard: /tmp/kubernetes-dashbaord.yml
 
 k8s_debian_packages:
