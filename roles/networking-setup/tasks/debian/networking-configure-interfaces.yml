@@ -1,0 +1,39 @@
+---
+- name: apt-get install vlan
+  apt:
+    # https://packages.debian.org/sid/vlan
+    name: [ 'vlan' ]
+    state: present
+    force: yes
+  when: _networking_use_vlan
+
+- name: Set Static IP for Raspbian systems
+  ## Raspbian used /etc/dhcpcd.conf
+  template:
+    src: dhcpcd.conf.j2
+    dest: /etc/dhcpcd.conf
+    mode: 0644
+    backup: true
+  become: true
+  register: _static_ip
+  when: _os_is_raspbian
+
+# - name: Set Static IP for Ubuntu based Systems (> bionic; Netplan)
+  ## deploy a netplan file
+  # template:
+  #   src: interfaces.j2
+  #   dest: /etc/network/interfaces
+  #   mode: 0644
+  #   backup: true
+  # become: true
+  # register: _static_ip
+  # when: >
+  #     not _os_is_raspbian
+  #     and (ansible_distribution == 'Ubuntu' and ansible_release == 'bionic')
+
+- name: Setup Debian NetworkManager
+  include_tasks: 
+    file: debian-static-ip.yml
+  when: >
+      not _os_is_raspbian
+      and not (ansible_distribution == 'Ubuntu' and ansible_release == 'bionic')

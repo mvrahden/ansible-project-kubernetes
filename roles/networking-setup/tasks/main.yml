@@ -1,0 +1,54 @@
+---
+- name: Register raspbian distribution
+  # see: https://raspberrypi.stackexchange.com/questions/6974/how-can-i-determine-which-os-image-i-am-running#40826
+  shell: cat /etc/os-release | grep ID=raspbian
+  when: ansible_os_family == "Debian"
+  ignore_errors: true
+  register: _os_release_id
+
+- name: Set _os_is_raspbian
+  set_fact: 
+    _os_is_raspbian: "{{ _os_release_id['stdout'] | regex_findall('raspbian') | list | length > 0 }}"
+
+- debug:
+    var: _os_is_raspbian
+
+- name: Set network interface profiles and static IP
+  include_tasks: 
+    file: debian/networking-configure-interfaces.yml
+  vars:
+    _interface_profiles: "{{ interface_profiles | mandatory }}"
+    _interfaces: "{{ network_interfaces | default(['eth0'], true) }}"
+    _networking_use_vlan: "{{ networking_use_vlan | default(false) }}" # variable can be inferred via dot-notation in interface profiles (".")
+  when: ansible_os_family == "Debian"
+    and 'interfaces' in subtasks
+
+- name: Set Hostname
+  include_tasks: 
+    file: debian/networking-set-hostname.yml
+  vars:
+    _domain: "{{ domain | mandatory }}"
+    _interfaces: "{{ network_interfaces | default(['eth0'], true) }}"
+  when: ansible_os_family == "Debian"
+    and 'hostname' in subtasks
+
+- name: Set netfilter and iptables definitions
+  include_tasks: 
+    file: debian/networking-netfilter.yml
+  vars:
+    _iptables_definitions: "{{ iptables_definitions | mandatory }}"
+  when: >
+    ansible_os_family == "Debian"
+    and 'netfilter' in subtasks
+
+- name: Reboot
+  vars:
+    _reboot: "{{ reboot }}"
+  shell: sleep 5 && reboot
+  async: 1
+  poll: 0
+  when: >
+        (_hostname['changed']
+        or _hostsfile['changed']
+        or _static_ip['changed'])
+        and _reboot

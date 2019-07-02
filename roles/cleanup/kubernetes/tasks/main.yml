@@ -1,0 +1,12 @@
+---
+- name: Remove Kubernetes Artifacts
+  include_tasks: 
+    file: "{{ item }}"
+  with_items:
+    - kubernetes-artifacts.yml
+
+- name: Remove Flannel Artifacts
+  include_tasks: 
+    file: "{{ item }}"
+  with_items:
+    - flannel-artifacts.yml

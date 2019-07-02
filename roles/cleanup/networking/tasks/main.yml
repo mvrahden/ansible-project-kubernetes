@@ -1,0 +1,15 @@
+---
+- name: Set Hostname and Static IP
+  include_tasks: 
+    file: "{{ item }}"
+  vars:
+    _iptables_definitions: "{{ iptables_definitions | mandatory }}"
+  when: ansible_os_family == "Debian"
+  with_items:
+    - debian/reset-networking.yml
+    - debian/reset-netfilter.yml
+
+- name: Reboot
+  shell: sleep 5 && reboot
+  async: 1
+  poll: 0

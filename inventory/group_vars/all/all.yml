@@ -1,0 +1,25 @@
+---
+kube_networking_use_vlan: false
+
+kube_primary_domain: kube.black-pearl.com
+
+# Masters are depending on VLAN interface for internal cluster communication
+# Slaves depend on physical interface
+# DON'T TOUCH #####
+internal_network_interface: "{{ kube_master_wired_interface | default(None) or kube_slave_wired_interface }}"
+
+arch_mapping:
+  # Kubernetes Architectures: amd64 | arm64 | arm | ppc64le | s390x
+  # see: https://packages.cloud.google.com/apt/dists/kubernetes-xenial/Release
+  # Ansible Architectures
+  # see: https://github.com/ansible/ansible/blob/d2dc4c9bc43aae4e1b46098ac1e006fa3dda00ae/lib/ansible/modules/packaging/os/dnf.py#L374
+  amd64: "amd64"
+  x86_64: "amd64"
+  armv7l: "arm"     # Raspberry Pi 3 B+  # sometimes also referred to as armhf
+  aarch64: "arm64"  # Rock64
+  ppc64le: "ppc64le"
+  s390x: "s390x"
+
+kube_node_arch: "{{ arch_mapping[ ansible_facts['architecture'] ] }}"
+kube_nodes_ansible_archs: "{{ groups['all'] | map('extract', hostvars, ['ansible_facts', 'architecture'] ) | list | unique }}"
+kube_all_archs: "{{ kube_nodes_ansible_archs | map('extract', arch_mapping ) | list | unique }}"

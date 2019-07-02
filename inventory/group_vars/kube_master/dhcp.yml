@@ -1,0 +1,18 @@
+---
+# Defines DHCP handed out DNS servers
+dhcp_dns_servers:
+  - "{{ dhcp_scope_gateway }}"
+  # - 8.8.8.8
+  # - 8.8.4.4
+# Defines DHCP scope gateway address
+dhcp_scope_gateway: "{{ dhcp_scope_subnet }}.1"
+# Defines dhcp scope subnet for isolated network
+dhcp_scope_subnet: 192.168.100
+# Defines DHCP scope subnet mask
+dhcp_scope_subnet_id: "{{ dhcp_scope_subnet }}.0"
+dhcp_scope_broadcast: "{{ dhcp_scope_subnet }}.255"
+dhcp_scope_netmask: 255.255.255.0
+dhcp_scope_cidr: 24
+# Defines DHCP scope start and end address
+dhcp_scope_range_start: "{{ dhcp_scope_subnet }}.200"
+dhcp_scope_range_end: "{{ dhcp_scope_subnet }}.207"

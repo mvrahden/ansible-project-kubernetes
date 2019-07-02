@@ -1,0 +1,34 @@
+---
+- name: Setup first phase of networking (network interfaces) for master
+  # Manages, that the master will have access
+  # - with a physical interface to the external network and 
+  # - with a vlan interface access to the (internal) cluster subnet
+  # a rebooting will activate those settings
+  hosts: kube_master
+  pre_tasks:
+  roles:
+    - role: initialization-tasks
+      additional_packages: [ 'dnsutils', 'vim' ]
+    - role: networking-setup  # triggers a reboot
+      subtasks: [ 'interfaces' ]
+      network_interfaces: 
+        - "{{ kube_master_wired_interface }}"
+      networking_use_vlan: "{{ kube_networking_use_vlan }}"
+      interface_profiles: "{{ kube_master_interface_profiles }}"
+      reboot: true
+
+- name: Setup networking for slaves
+  # Manages, that the slaves will have access
+  # - with a physical interface to the (internal) cluster network ONLY
+  # a rebooting will activate those settings
+  hosts: kube_slaves
+  roles:
+    - role: initialization-tasks
+      additional_packages: [ 'dnsutils', 'vim' ]
+    - role: networking-setup  # triggers a reboot
+      subtasks: [ 'interfaces' ]
+      network_interfaces:
+        - "{{ kube_slave_wired_interface }}"
+      networking_use_vlan: "{{ kube_networking_use_vlan }}"
+      interface_profiles: "{{ kube_slave_interface_profiles }}"
+      reboot: true

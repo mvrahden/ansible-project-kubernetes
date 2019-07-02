@@ -1,0 +1,43 @@
+---
+# interface for external communication (bastion interface)
+kube_master_wired_interface: eth0
+# ip for external communication (bastion interface)
+kube_master_external_ip: "{{ ansible_host }}"
+# interface for internal communication (delegative interface)
+# kube_master_vlan_interface: eth0.100
+# # ip for internal communication (delegative interface)
+# kube_master_internal_ip: 192.168.100.200
+
+kube_master_interface_profiles:
+  - type: iface
+    auto: lo
+    interface: lo
+    address_family: inet      # or inet6 or ipx
+    address_method: loopback  # or dhcp
+  - type: iface
+    auto: "{{ kube_master_wired_interface }}"
+    allow_hotplug: "{{ kube_master_wired_interface }}"
+    interface: "{{ kube_master_wired_interface }}"
+    address_family: inet    # or inet6 or ipx
+    address_method: static  # or dhcp
+    cidr_notation: "{{ kube_master_external_ip }}/24"
+    address: "{{ kube_master_external_ip }}"
+    netmask: 255.255.255.0  # CIDR /24
+    gateway: 192.168.1.1
+    # network: 192.168.1.0
+    # broadcast: 192.168.1.255
+    dns_nameservers:        # are there any local DNS Name Servers?
+      - 192.168.1.103
+      - 192.168.1.104
+      - 192.168.1.1
+
+  #   ### add a vlan to manage the cluster in an isolated environment
+  # - type: iface
+  #   auto: "{{ kube_master_vlan_interface }}"               # necessary, to the device from being automatically declared as 'unmanaged' and removed
+  #   interface: "{{ kube_master_vlan_interface }}"          # vlan with eth0 as physical link
+  #   vlan_raw_device: "{{ kube_master_wired_interface }}"   # physical interface name
+  #   address_family: inet    # or inet6 or ipx
+  #   address_method: static  # or dhcp
+  #   cidr_notation: "{{ kube_master_internal_ip }}/24"
+  #   address: "{{ kube_master_internal_ip }}"
+  #   netmask: 255.255.255.0  # CIDR /24

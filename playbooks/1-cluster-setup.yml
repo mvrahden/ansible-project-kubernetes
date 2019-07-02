@@ -1,0 +1,114 @@
+---
+- hosts: kube_cluster
+  gather_facts: false
+  any_errors_fatal: true
+  tasks:
+    - name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
+      wait_for:
+        port: 22
+        host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+        search_regex: OpenSSH
+        delay: 10
+
+- hosts: kube_cluster
+  name: Check Docker-CE availability
+  any_errors_fatal: true
+  vars:
+  pre_tasks:
+    ## from the init provisioning we should already have docker installed
+    ## check it:
+    - name: Determine docker version
+      command: "/usr/bin/docker --version"
+      register: _docker_version
+      ignore_errors: false # errors can NOT be ignored here, as playbook depends on Docker-CE
+    
+    - debug:
+        var: _docker_version
+
+    - name: Ensuring docker Service Is Started and Enabled On Boot
+      service:
+        name: docker
+        state: started
+        enabled: true
+      become: true
+      when: "'Docker version' not in _docker_version['stdout']"
+
+    # - name: Uninstall docker-ce
+    #   apt:
+    #     name:
+    #       - docker-ce
+    #     autoremove: yes
+    #     force: yes
+    #     state: absent
+
+    # - name: Install docker-ce
+    #   apt:
+    #     name:
+    #       - 'docker-ce=5:18.09.6~3-0~debian-stretch'
+    #     state: present
+    #     force: yes
+
+- hosts: kube_cluster
+  name: Reseting and uninstalling any existing Kubernetes artifacts
+  any_errors_fatal: true
+  vars:
+  roles:
+    - name: Clean up Kubernetes and potential other artifacts
+      role: cleanup/kubernetes
+
+- hosts: kube_cluster
+  name: Upload dependent deployment files and setup kubernetes
+  any_errors_fatal: true
+  vars:
+  pre_tasks:
+    - name: Upload Flannel (dynamic) Multi-Architecture template
+      template:
+        src: flannel.multi-arch.yml.j2
+        dest: "{{ k8s_pod_network_config }}"
+      become: true
+      # only template when protocol-less location is provided
+      when: >
+            '://' not in k8s_pod_network_config
+            and (inventory_hostname == k8s_master)
+  roles:
+    - role: mvrahden/ansible-k8s
+
+- hosts: kube_master
+  name: Setup Kubernetes Dashboard
+  any_errors_fatal: true
+  tasks:
+    - name: Upload Dashboard configuration file
+      template:
+        src: kubernetes-dashboard.yml.j2
+        dest: "{{ k8s_dashboard }}"
+      become: true
+
+    ### Required: Create Admin Account and get Access Token for Dashboard
+    # https://github.com/kubernetes/dashboard/wiki/Creating-sample-user
+    - name: Upload Kubernetes Admin ServiceAccount and ClusterRoleBinding configuration
+      template:
+        src: kubernetes-admin.yml.j2
+        dest: /tmp/kubernetes-admin.yml
+      become: true
+
+    - name: Apply Admin ServiceAccount and ClusterRoleBinding
+      shell: >
+               kubectl --kubeconfig {{ k8s_admin_config }} \
+               apply -f /tmp/kubernetes-admin.yml
+
+    - name: Apply Dashboard
+      shell: >
+               kubectl --kubeconfig {{ k8s_admin_config }} \
+               apply -f "{{ k8s_dashboard }}"
+
+    - name: Describe Secret for Service Account
+      shell: >
+             kubectl --kubeconfig {{ k8s_admin_config }} \
+             -n kube-system \
+             describe secret $(kubectl -n kube-system get secret | grep kubernetes-admin | awk '{print $1}')
+      become: true
+      register: _kubernetes_admin_token
+
+    - name: Print the token
+      debug:
+        msg: "{{ _kubernetes_admin_token['stdout'] }}"

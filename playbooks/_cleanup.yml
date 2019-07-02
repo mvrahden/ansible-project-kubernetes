@@ -1,0 +1,6 @@
+---
+- name: Reset networking
+  hosts: kube_master
+  roles:
+    - role: cleanup/networking
+      iptables_definitions: "{{ bastion_iptables_definitions }}"

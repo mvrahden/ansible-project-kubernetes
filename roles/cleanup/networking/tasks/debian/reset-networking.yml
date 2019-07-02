@@ -1,0 +1,20 @@
+---
+- name: Reset Network Management configuration files to their respective defaults
+  # hostsfile, NetworkManager, interfaces, dhcpcd
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+  become: true
+  with_items:
+    - src: debian/bak/hosts.j2
+      dest: /etc/hosts
+    - src: debian/bak/interfaces.j2
+      dest: /etc/network/interfaces
+    - src: debian/bak/eth0.j2
+      dest: /etc/network/interfaces.d/eth0
+    - src: debian/bak/NetworkManager.conf.j2
+      dest: /etc/NetworkManager/NetworkManager.conf
+    - src: debian/bak/dhcpcd.conf.j2
+      dest: /etc/dhcpcd.conf
+  register: _reset_networking

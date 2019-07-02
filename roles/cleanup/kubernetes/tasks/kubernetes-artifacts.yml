@@ -1,0 +1,39 @@
+---
+- name: Check if kubernetes is installed
+  shell: kubeadm version
+  register: _kubeadm_version
+  ignore_errors: true # errors can be ignored here, as we use this variable just to uninstall
+
+- debug:
+    var: _kubeadm_version
+
+- name: If kubeadm exists, reset it
+  command: kubeadm reset -f # remove '-f' for lower K8s Versions (< v1.11.0)
+  become: true
+  when: "'kubeadm version' in _kubeadm_version['stdout']"
+
+- name: Uninstall all kubernetes-relevant packages
+  apt:
+    name: "{{ k8s_debian_packages }}"
+    autoremove: yes
+    force: yes
+    state: absent
+  ignore_errors: true
+
+- name: Remove admin.conf file (as it is checked by )
+  file:
+    path: /etc/kubernetes/admin.conf
+    state: absent
+  become: true
+
+- name: Remove Kubernetes and etcd artifacts
+  shell: rm -{{ item.flags}} {{ item.target }}
+  become: true
+  with_items:
+    - flags: rf
+      target: /etc/kubernetes/*
+    - flags: rf
+      target: /var/lib/kubelet/*
+    - flags: rf
+      target: /var/lib/etcd/member
+  ignore_errors: true

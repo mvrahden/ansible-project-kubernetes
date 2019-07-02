@@ -1,0 +1,6 @@
+{{ ("this file was reset via ansible @ " + ansible_date_time['iso8601']) |comment }}
+
+{# This is extracted from a rock64 debian #}
+{# cat /etc/network/interfaces.d/eth0 #}
+allow-hotplug eth0
+iface eth0 inet dhcp

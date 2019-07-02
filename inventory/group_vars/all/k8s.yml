@@ -1,0 +1,41 @@
+---
+docker_version: 18.09.6
+
+k8s_advertise_address_int: "{{ internal_network_interface }}"
+
+# inventory group
+k8s_cluster_group: kube_cluster
+k8s_master: kube-r64-000
+
+k8s_cluster_init_skip_ca_verification: true
+
+# Define architecture to install helm
+# helm allows: amd64 | arm | arm64 | ppc64le | s390x | 386
+# see: https://storage.googleapis.com/kubernetes-helm/
+k8s_helm_architecture: "{{ kube_node_arch }}"
+
+k8s_helm_install: true
+
+k8s_helm_version: 2.14.0
+
+# Use coreos/flannel
+k8s_pod_network_config: "https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml"
+# Deploy only necessary deamonsets by uncommenting the following lines
+# k8s_system_archs: [ 'arm64' ]  # amd64 | arm64 | arm | ppc64le | s390x
+# k8s_pod_network_config: /tmp/flannel.yml
+
+k8s_users:
+  - user: rock64
+
+k8s_version: 1.14.1 # not officially supported by dashboard!
+
+k8s_dashboard: /tmp/kubernetes-dashbaord.yml
+
+k8s_debian_packages:
+  - kubelet
+  - kubeadm
+  - kubectl
+  - kubernetes-cni
+  # - kubernetes-cni=0.6.0-00 # mandatory for older k8s versions (<1.13.5)
+  # - kubernetes-cni=0.7.5-00 # mandatory for newer k8s versions (>=1.13.5)
+  # fix by installing 0.7.5-00 as post-task (see: https://github.com/kubernetes/kubernetes/issues/75683)

@@ -1,0 +1,17 @@
+---
+- name: Enable and start service
+  service:
+    name: dnsmasq
+    state: started
+    enabled: true
+  become: true
+
+- name: Capturing DNSMasq DHCP Leases
+  shell: cat /var/lib/misc/dnsmasq.leases | awk '{ print $4,$3,$2 }'
+  register: _dnsmasq_dhcp_leases
+  changed_when: false
+  retries: 18
+  delay: 10
+  until: >
+    _dnsmasq_dhcp_leases['stdout_lines'] != [] and
+    _dnsmasq_dhcp_leases['stdout_lines']|length == (rpi_nodes - 1 )

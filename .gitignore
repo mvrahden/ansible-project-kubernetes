@@ -1,0 +1,7 @@
+roles/mrlesmithjr
+roles/mvrahden
+.log/*
+.cache/*
+.cp/*
+out/*
+dist/*

@@ -1,0 +1,56 @@
+---
+# interface for external communication (bastion interface)
+kube_slave_wired_interface: eth0
+# ip for external communication (bastion interface)
+kube_slave_external_ip: "192.168.1.{{ ansible_host.split('.')[3] | default(None) or hostvars[inventory_hostname]['ansible_' + kube_slave_wired_interface ]['ipv4']['address'].split('.')[3] }}"
+# interface for internal communication (delegative interface)
+# kube_slave_vlan_interface: eth0.100
+# ip for internal communication (delegative interface)
+# kube_slave_internal_ip: 192.168.100.200
+# dns and dhcp gateway
+# kube_slave_gateway: 192.168.100.200 # SET MANUALLY
+
+# static target IP endings per host
+# these endings need to be aligned with the inventory file
+# important for bootstrapping the network
+# kube_slave_ip_ending:
+#   kube-r64-001: 201
+#   kube-r64-002: 202
+#   kube-r64-003: 203
+#   kube-r64-004: 204
+#   kube-r64-005: 205
+#   kube-r64-006: 206
+#   kube-r64-007: 207
+
+kube_slave_interface_profiles:
+  - type: iface
+    auto: lo
+    interface: lo
+    address_family: inet      # or inet6 or ipx
+    address_method: loopback  # or dhcp
+  - type: iface
+    auto: "{{ kube_slave_wired_interface }}"
+    allow_hotplug: "{{ kube_slave_wired_interface }}"
+    interface: "{{ kube_slave_wired_interface }}"
+    address_family: inet    # or inet6 or ipx
+    address_method: static  # or dhcp
+    cidr_notation: "{{ kube_slave_external_ip }}/24"
+    address: "{{ kube_slave_external_ip }}"
+    netmask: 255.255.255.0  # CIDR /24
+    gateway: 192.168.1.1
+    dns_nameservers:        # are there any local DNS Name Servers?
+      - 192.168.1.103
+      - 192.168.1.104
+      - 192.168.1.1
+    ### add a vlan to manage the cluster in an isolated environment
+  # - type: iface
+  #   auto: "{{ kube_slave_vlan_interface }}"               # necessary, to the device from being automatically declared as 'unmanaged' and removed
+  #   interface: "{{ kube_slave_vlan_interface }}"          # vlan with eth0 as physical link
+  #   vlan_raw_device: "{{ kube_slave_wired_interface }}"   # physical interface name
+  #   address_family: inet    # or inet6 or ipx
+  #   address_method: dhcp  # or dhcp
+  #   # cidr_notation: "{{ kube_slave_internal_ip }}/24"
+  #   # address: "{{ kube_slave_internal_ip }}"
+  #   # netmask: 255.255.255.0  # CIDR /24
+  #   dns_nameservers:        # are there any local DNS Name Servers?
+  #     - "{{ kube_slave_gateway }}"

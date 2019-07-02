@@ -1,0 +1,53 @@
+---
+- name: Continuation of master setup
+  hosts: kube_master
+  pre_tasks:
+    - debug:
+        var: "{{ item }}"
+      with_items:
+        - groups
+        - play_hosts
+  roles:
+    - role: networking-setup
+      subtasks: [ 'hostname' ] # , 'netfilter'
+      domain: "{{ kube_primary_domain }}"
+      network_interfaces: 
+        - "{{ kube_master_wired_interface }}"
+        - "{{ kube_master_vlan_interface }}"
+      reboot: true
+
+- name: Continuation of slave setup
+  hosts: kube_slaves
+  pre_tasks:
+    - debug:
+        var: "{{ item }}"
+      with_items:
+        - groups
+        - play_hosts
+  roles:
+    - role: networking-setup
+      subtasks: [ 'hostname' ]
+      domain: "{{ kube_primary_domain }}"
+      network_interfaces: 
+        - "{{ kube_slave_wired_interface }}"
+      reboot: true
+
+- name: Setup further common packages (ntp, apt-cache-ng)
+  hosts: kube_cluster
+  pre_tasks:
+    - name: Wait for devices accessibility
+      # just to ensure that devices are up and running after bootstrap-run
+      wait_for_connection:
+        connect_timeout: 20
+        sleep: 5
+        delay: 5
+        timeout: 180
+    - name: Disabling Swap
+      service:
+        name: dphys-swapfile
+        enabled: false
+        state: stopped
+      become: true
+  roles:
+    - role: mrlesmithjr/ansible-ntp
+    - role: mrlesmithjr/ansible-apt-cacher-ng
