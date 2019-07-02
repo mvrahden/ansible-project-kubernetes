@@ -1,18 +1,20 @@
 ---
+# static target IP endings per host
+# these endings need to be aligned with the inventory file (hosts.ini)
+# important for bootstrapping the network configuration
+kube_slave_ip_ending:
+  kube-r64-001: 201
+  kube-r64-002: 202
+  kube-r64-003: 203
+  kube-r64-004: 204
+  kube-r64-005: 205
+  kube-r64-006: 206
+  kube-r64-007: 207
+
 # interface for external communication (bastion interface)
 kube_slave_wired_interface: eth0
 # ip for external communication (bastion interface)
-# static target IP endings per host
-# these endings need to be aligned with the inventory file
-# important for bootstrapping the network
-# kube_slave_ip_ending:
-#   kube-r64-001: 201
-#   kube-r64-002: 202
-#   kube-r64-003: 203
-#   kube-r64-004: 204
-#   kube-r64-005: 205
-#   kube-r64-006: 206
-#   kube-r64-007: 207
+kube_slave_external_ip: "192.168.1.{{ kube_slave_ip_ending[inventory_hostname] | default(None) or hostvars[inventory_hostname]['ansible_' + kube_slave_wired_interface ]['ipv4']['address'].split('.')[3] }}"
 
 kube_slave_interface_profiles:
   - type: iface
