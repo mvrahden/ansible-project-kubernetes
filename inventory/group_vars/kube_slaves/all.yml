@@ -10,13 +10,14 @@ kube_slave_ip_ending:
   kube-r64-005: 205
   kube-r64-006: 206
   kube-r64-007: 207
+kube_slave_subnet: 192.168.1
 
 ansible_host: "{{ kube_slave_external_ip }}"
 
 # interface for external communication (bastion interface)
 kube_slave_wired_interface: eth0
 # ip for external communication (bastion interface)
-kube_slave_external_ip: "192.168.1.{{ kube_slave_ip_ending[inventory_hostname] | default(None) or hostvars[inventory_hostname]['ansible_' + kube_slave_wired_interface ]['ipv4']['address'].split('.')[3] }}"
+kube_slave_external_ip: "{{ kube_slave_subnet }}.{{ kube_slave_ip_ending[inventory_hostname] | default(None) or hostvars[inventory_hostname]['ansible_' + kube_slave_wired_interface ]['ipv4']['address'].split('.')[3] }}"
 
 kube_slave_interface_profiles:
   - type: iface
