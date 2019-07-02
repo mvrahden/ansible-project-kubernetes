@@ -1,5 +1,7 @@
 # Deploy a Kubernetes Cluster
 
+![social-banner](https://github.com/mvrahden/openclusters/raw/22133c21f7b10a46d4555dd21455f9932b34d00e/images/social-preview-color.png)
+
 ## Motivation
 
 This Ansible project was created to ensure an automated and reproducible process of setting up a Kubernetes Cluster environment on a defined list of host machines.
@@ -32,5 +34,5 @@ MIT
 
 ## Author Information
 
-Menno van Rahden
-Larry Smith Jr.
+- Menno van Rahden
+- Larry Smith Jr.
