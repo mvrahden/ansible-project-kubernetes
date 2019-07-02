@@ -53,5 +53,5 @@
       become: true
 
   roles:
-    - role: mrlesmithjr/ansible-ntp
-    - role: mrlesmithjr/ansible-apt-cacher-ng
+    - role: mvrahden/ansible-ntp
+    - role: mvrahden/ansible-apt-cacher-ng
