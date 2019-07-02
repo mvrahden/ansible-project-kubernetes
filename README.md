@@ -9,10 +9,10 @@ This Ansible project was created to ensure an automated and reproducible process
 ## Prerequisites
 
 - install required roles: `ansible-galaxy install -r requirements.yml`
-- install fresh versions of a Debian-based on your devices by flashing their persistent storage devices   
-  For your **Intel NUC** this could be [this Ubuntu Server image](http://cdimage.ubuntu.com/ubuntu/releases/19.04/release/ubuntu-19.04-server-amd64.iso) or [check other releases](https://ubuntu.com/download/server).   
-  For your **Rock64** this could be [this minimal debian image](https://github.com/ayufan-rock64/linux-build/releases/download/0.8.3/stretch-minimal-rock64-0.8.3-1141-arm64.img.xz) or [check other releases](https://github.com/ayufan-rock64/linux-build/releases/).   
-  For your **RaspberryPi** this could be [Raspbian Lite](https://downloads.raspberrypi.org/raspbian_lite_latest).
+- install fresh versions of a Debian-based on your devices by flashing their persistent storage devices
+  - For your **Intel NUC** this could be [this Ubuntu Server image](http://cdimage.ubuntu.com/ubuntu/releases/19.04/release/ubuntu-19.04-server-amd64.iso) or [check other releases](https://ubuntu.com/download/server).
+  - For your **Rock64** this could be [this minimal debian image](https://github.com/ayufan-rock64/linux-build/releases/download/0.8.3/stretch-minimal-rock64-0.8.3-1141-arm64.img.xz) or [check other releases](https://github.com/ayufan-rock64/linux-build/releases/).
+  - For your **Raspberry Pi** this could be [Raspbian Lite](https://downloads.raspberrypi.org/raspbian_lite_latest).
 
 ## What it does
 
