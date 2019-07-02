@@ -69,9 +69,11 @@
       # only template when protocol-less location is provided
       when: >
             '://' not in k8s_pod_network_config
-            and (inventory_hostname == k8s_master)
+            and (inventory_hostname in groups['kube_master'])
   roles:
     - role: mvrahden/ansible-k8s
+      vars:
+        k8s_master: "{{ groups['kube_master'][0] }}"
 
 - hosts: kube_master
   name: Setup Kubernetes Dashboard
