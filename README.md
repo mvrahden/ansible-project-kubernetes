@@ -19,14 +19,22 @@ This Ansible project was created to ensure an automated and reproducible process
 This Ansible project sets up a working kubernetes environment on your cluster of host machines.
 It can be configured with an overlay network, such as weave-net or coreos/flannel (defaults to: flannel).
 
-
 ## How it works
 
 The Ansible project contains multiple playbooks, each with its specific purpose.
 The bootstrap process (which tries to setup the networking and other needed packages) is split into two playbooks.
 The first bootstrap-playbook guarantees **static IPs** for the host machines, as after a clean install host machines will fallback to a dynamically allocated IP via DHCP.
 The second bootstrap-playbook then goes on with **guaranteed IPs** and **sets hostnames** and **installs further packages**.
-To know more on how to use them, please read [this README-file](./playbooks/README.md)
+To know more on how to play them, please read [this README-file](./playbooks/README.md)
+
+After the plays have been successfully executed, you'll find two files inside the `dist/`-directory.
+
+- `dist/admin.conf` - gives you the content of the cluster admin configuration (also known as **kubeconfig**).
+  Copy the content of this file into the file `~/.kube/config` of your local control machine and then execute `kubectl proxy` to initiate a successful binding of your control machine to the cluster.
+- `dist/token` - gives your the token of the **kubernetes-admin** service account, that has been allocated to the dashboard.
+  Use this token to log into the dashboard. 
+  Log into the Dashboard under:
+  http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login
 
 ## License
 
