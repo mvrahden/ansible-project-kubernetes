@@ -25,7 +25,7 @@ This playbook installs further networking conditions and packages on the hosts, 
 
 It **must** be executed with the **default inventory** like so:
 
-`ansible-playbook playbooks/0b-bootstrap.yml -i inventory/hosts.ini -k`
+`ansible-playbook playbooks/0b-bootstrap.yml -k`
 
 ## 1-cluster-setup.yml
 
@@ -33,9 +33,4 @@ Checks availability of Docker-CE and fully removes any Kubernetes artifacts and 
 
 It **must** be executed with the **default inventory** like so:
 
-`ansible-playbook playbooks/1-cluster-setup.yml -i inventory/hosts.ini -k`
-
-## cleanup/networking.yml
-
-Resets the networking interfaces, networking configurations and packages (such as iptables) to their default configuration.
-Execute it with the default inventory file: `ansible-playbook playbooks/cleanup/networking.yml -k`
+`ansible-playbook playbooks/1-cluster-setup.yml -k`
