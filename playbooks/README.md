@@ -5,12 +5,12 @@ These playbooks assume, that you played the `mvrahden/ansible-init-debian`-playb
 It is a setup in 3 consecutive Steps:
 
 - 0a-bootstrap - static ips
-- 0b-bootstrap
-- 1-cluster-setup
+- 0b-bootstrap - hostnames and necessary packages
+- 1-cluster-setup - actual kubernetes install
 
 ## 0a-bootstrap.yml
 
-When your initial IP addresses do **not** equal your static target addresses, then use this playbook with a dedicated *temporary inventory*.
+When your initial IP addresses do **not** equal your static target addresses, then use this playbook with a dedicated *temporary inventory* (./inventory/hosts.tmp.bootstrap.ini).
 As an example:
 
 - your master has in the current default state a dynamic ip address `192.168.1.56`
