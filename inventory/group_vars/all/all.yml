@@ -1,7 +1,7 @@
 ---
-kube_networking_use_vlan: false
-
 kube_primary_domain: kube.black-pearl.com
+
+kube_networking_use_vlan: false
 
 # Masters are depending on VLAN interface for internal cluster communication
 # Slaves depend on physical interface
