@@ -5,6 +5,8 @@
 kube_master_ip_ending:
   kube-r64-000: 200
 
+ansible_host: "{{ kube_master_external_ip }}"
+
 # interface for external communication (bastion interface)
 kube_master_wired_interface: eth0
 # ip for external communication (bastion interface)

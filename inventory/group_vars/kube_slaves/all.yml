@@ -11,6 +11,8 @@ kube_slave_ip_ending:
   kube-r64-006: 206
   kube-r64-007: 207
 
+ansible_host: "{{ kube_slave_external_ip }}"
+
 # interface for external communication (bastion interface)
 kube_slave_wired_interface: eth0
 # ip for external communication (bastion interface)
