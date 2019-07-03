@@ -1,6 +1,6 @@
 # Some instructions
 
-These playbooks assume, that you played the `mvrahden/ansible-init-debian`-playbook to homogenize your devices before running this playbook.
+These playbooks assume, that you played the `mvrahden/ansible-project-debian-base-setup`-playbook to homogenize your devices before running this playbook.
 
 It is a setup in 3 consecutive Steps:
 
