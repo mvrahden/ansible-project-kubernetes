@@ -32,7 +32,7 @@ After the plays have been successfully executed, you'll find two files inside th
 - `dist/admin.conf` - gives you the content of the cluster admin configuration (also known as **kubeconfig**).
   Copy the content of this file into the file `~/.kube/config` of your local control machine and then execute `kubectl proxy` to initiate a successful binding of your control machine to the cluster.
 - `dist/token` - gives your the token of the **kubernetes-admin** service account, that has been allocated to the dashboard.
-  Use this token to log into the dashboard. 
+  Use this token to log into the dashboard.
   Log into the Dashboard under:
   http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login
 
