@@ -16,7 +16,7 @@
 - name: Update Package Management
   include: debian/package-management.yml
   vars:
-    _additional_packages: "{{ additional_packages | default([], true) }}"
+    _additional_packages: "{{ additional_packages }}"
   when: ansible_os_family == "Debian"
 
 - name: Apply Patches
