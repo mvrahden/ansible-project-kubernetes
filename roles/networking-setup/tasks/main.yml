@@ -48,7 +48,4 @@
   async: 1
   poll: 0
   when: >
-        (_hostname['changed']
-        or _hostsfile['changed']
-        or _static_ip['changed'])
-        and _reboot
+    _reboot
