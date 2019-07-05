@@ -1,25 +1,25 @@
 ---
-ansible_host: "{{ kube_slave_external_ip }}"
+ansible_host: "{{ kube_external_ip }}"
 
-# interface for external communication (bastion interface)
-kube_slave_wired_interface: eth0
-# ip for external communication (bastion interface)
-kube_slave_external_ip: "{{ kube_subnet }}.{{ kube_ip_ending[inventory_hostname] | default(None) or hostvars[inventory_hostname]['ansible_' + kube_slave_wired_interface ]['ipv4']['address'].split('.')[3] }}"
+# interface for external communication
+kube_wired_interface: eth0
+# ip for external communication
+kube_external_ip: "{{ kube_subnet }}.{{ kube_ip_ending[inventory_hostname] | default(None) or hostvars[inventory_hostname]['ansible_' + kube_wired_interface ]['ipv4']['address'].split('.')[3] }}"
 
-kube_slave_interface_profiles:
+kube_interface_profiles:
   - type: iface
     auto: lo
     interface: lo
     address_family: inet      # or inet6 or ipx
     address_method: loopback  # or dhcp
   - type: iface
-    auto: "{{ kube_slave_wired_interface }}"
-    allow_hotplug: "{{ kube_slave_wired_interface }}"
-    interface: "{{ kube_slave_wired_interface }}"
+    auto: "{{ kube_wired_interface }}"
+    allow_hotplug: "{{ kube_wired_interface }}"
+    interface: "{{ kube_wired_interface }}"
     address_family: inet    # or inet6 or ipx
     address_method: static  # or dhcp
-    cidr_notation: "{{ kube_slave_external_ip }}/24"
-    address: "{{ kube_slave_external_ip }}"
+    cidr_notation: "{{ kube_external_ip }}/24"
+    address: "{{ kube_external_ip }}"
     netmask: 255.255.255.0  # CIDR /24
     gateway: 192.168.1.1
     dns_nameservers:        # are there any local DNS Name Servers?
