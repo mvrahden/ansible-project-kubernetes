@@ -5,8 +5,6 @@ kube_users:
   - user: pi
   - user: rock64
 
-kube_networking_use_vlan: false
-
 kube_subnet: 192.168.1
 # static target IP endings per host
 # important for bootstrapping the network configuration
