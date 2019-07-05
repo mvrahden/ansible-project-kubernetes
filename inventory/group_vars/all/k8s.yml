@@ -5,7 +5,7 @@ k8s_users: "{{ kube_users }}"
 
 docker_version: 18.09.6
 
-k8s_advertise_address_int: "{{ internal_network_interface }}"
+k8s_advertise_address_int: "{{ kube_master_wired_interface | default(None) or kube_slave_wired_interface }}"
 
 k8s_cluster_init_skip_ca_verification: true
 
