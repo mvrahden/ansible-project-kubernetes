@@ -23,7 +23,6 @@
       subtasks: [ 'interfaces' ]
       network_interfaces: 
         - "{{ kube_master_wired_interface }}"
-      networking_use_vlan: "{{ kube_networking_use_vlan }}"
       interface_profiles: "{{ kube_master_interface_profiles }}"
       reboot: true
 
@@ -39,6 +38,5 @@
       subtasks: [ 'interfaces' ]
       network_interfaces:
         - "{{ kube_slave_wired_interface }}"
-      networking_use_vlan: "{{ kube_networking_use_vlan }}"
       interface_profiles: "{{ kube_slave_interface_profiles }}"
       reboot: true
