@@ -40,6 +40,7 @@ require dhcp_server_identifier
 slaac private
 
 {% if _dhcpcd['denyinterfaces'] is defined %}
+{# denyinterfaces is defined through tasks/debian/static-ip/debian.yml and defaults to eth0 #}
 denyinterfaces {{ _dhcpcd['denyinterfaces'] | join(' ') }}
 {% endif %}
 
@@ -52,8 +53,8 @@ static ip_address={{ profile.cidr_notation }}
 {% if profile.gateway is defined %}
 static routers={{ profile.gateway }}
 {% endif %}
-{% if profile.dns is defined %}
-static domain_name_servers={{ profile.dns }}
+{% if profile.dns_nameservers is defined %}
+static domain_name_servers={{ profile.dns_nameservers | join(' ') }}
 {% endif %}
 
 {% endfor %}
