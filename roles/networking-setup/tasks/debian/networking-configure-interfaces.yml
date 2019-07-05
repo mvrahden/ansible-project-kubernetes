@@ -7,15 +7,9 @@
     force: yes
   when: _networking_use_vlan
 
-- name: Set Static IP for Raspbian systems
-  ## Raspbian used /etc/dhcpcd.conf
-  template:
-    src: dhcpcd.conf.j2
-    dest: /etc/dhcpcd.conf
-    mode: 0644
-    backup: true
-  become: true
-  register: _static_ip
+- name: Setup Raspbian (dhcpcd.conf)
+  include_tasks:
+    file: static-ip/raspbian.yml
   when: _os_is_raspbian
 
 # - name: Set Static IP for Ubuntu based Systems (> bionic; Netplan)
@@ -33,7 +27,7 @@
 
 - name: Setup Debian NetworkManager
   include_tasks: 
-    file: debian-static-ip.yml
+    file: static-ip/debian.yml
   when: >
       not _os_is_raspbian
       and not (ansible_distribution == 'Ubuntu' and ansible_release == 'bionic')
