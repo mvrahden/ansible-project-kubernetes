@@ -1,5 +1,29 @@
 ---
 kube_primary_domain: kube.black-pearl.com
+kube_master: kube-r64-000
+kube_users:
+  - user: pi
+  - user: rock64
 
 kube_networking_use_vlan: false
 
+kube_subnet: 192.168.1
+# static target IP endings per host
+# important for bootstrapping the network configuration
+kube_ip_ending:
+  kube-r64-000: 200
+  kube-r64-001: 201
+  kube-r64-002: 202
+  kube-r64-003: 203
+  kube-r64-004: 204
+  kube-r64-005: 205
+  kube-r64-006: 206
+  kube-r64-007: 207
+  kube-rpi-000: 150
+  kube-rpi-001: 151
+  kube-rpi-002: 152
+  kube-rpi-003: 153
+  kube-rpi-004: 154
+  kube-rpi-005: 155
+  kube-rpi-006: 156
+  kube-rpi-007: 157

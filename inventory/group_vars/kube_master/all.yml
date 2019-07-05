@@ -1,17 +1,10 @@
 ---
-# static target IP endings per host
-# these endings need to be aligned with the inventory file (hosts.ini)
-# important for bootstrapping the network configuration
-kube_master_ip_ending:
-  kube-r64-000: 200
-kube_master_subnet: 192.168.1
-
 ansible_host: "{{ kube_master_external_ip }}"
 
 # interface for external communication (bastion interface)
 kube_master_wired_interface: eth0
 # ip for external communication (bastion interface)
-kube_master_external_ip: "{{ kube_master_subnet }}.{{ kube_master_ip_ending[inventory_hostname] | default(None) or hostvars[inventory_hostname]['ansible_' + kube_master_wired_interface ]['ipv4']['address'].split('.')[3] }}"
+kube_master_external_ip: "{{ kube_subnet }}.{{ kube_ip_ending[inventory_hostname] | default(None) or hostvars[inventory_hostname]['ansible_' + kube_master_wired_interface ]['ipv4']['address'].split('.')[3] }}"
 
 kube_master_interface_profiles:
   - type: iface

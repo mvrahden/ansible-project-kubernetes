@@ -1,8 +1,7 @@
 ---
-k8s_cluster_group: kube_cluster # inventory group
-k8s_master: kube-r64-000
-k8s_users:
-  - user: rock64
+k8s_cluster_group: kube_cluster # inventory group name
+k8s_master: "{{ kube_master }}"
+k8s_users: "{{ kube_users }}"
 
 docker_version: 18.09.6
 
@@ -13,7 +12,7 @@ k8s_cluster_init_skip_ca_verification: true
 # Define architecture to install helm
 # helm allows: amd64 | arm | arm64 | ppc64le | s390x | 386
 # see: https://storage.googleapis.com/kubernetes-helm/
-k8s_helm_architecture: "{{ kube_node_arch }}"
+k8s_helm_architecture: "{{ target_node_arch }}"
 
 k8s_helm_install: true
 
