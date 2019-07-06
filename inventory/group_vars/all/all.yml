@@ -1,9 +1,9 @@
 ---
 kube_primary_domain: kube.black-pearl.com
-kube_master: kube-r64-000
+
+kube_master: "{{ groups['kube_master'][0] }}" # determine through inventory (single master setup)
 kube_users:
-  - user: pi
-  - user: rock64
+  - user: "{{ ansible_user }}"  # determine through inventory
 
 kube_subnet: 192.168.1
 # static target IP endings per host
