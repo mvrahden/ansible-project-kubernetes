@@ -15,6 +15,9 @@ arch_mapping:
   ppc64le: "ppc64le"
   s390x: "s390x"
 
+# current host cpu architecture mapped
 target_node_arch: "{{ arch_mapping[ ansible_facts['architecture'] ] }}"
+# list of all current host cpu architectures provided by ansible
 target_nodes_ansible_archs: "{{ groups['all'] | map('extract', hostvars, ['ansible_facts', 'architecture'] ) | list | unique }}"
+# list of all current host cpu architectures provided by ansible and mapped via arch_mapping
 target_all_archs: "{{ target_nodes_ansible_archs | map('extract', arch_mapping ) | list | unique }}"
