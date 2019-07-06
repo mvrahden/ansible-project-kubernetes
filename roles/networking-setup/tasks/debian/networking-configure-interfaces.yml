@@ -10,7 +10,7 @@
 - name: Setup Raspbian (dhcpcd.conf)
   include_tasks:
     file: static-ip/raspbian.yml
-  when: _os_is_raspbian
+  when: _os_is_raspbian|bool
 
 # - name: Set Static IP for Ubuntu based Systems (> bionic; Netplan)
   ## deploy a netplan file
