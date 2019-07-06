@@ -14,11 +14,10 @@ When your initial IP addresses do **not** equal your static target addresses, th
 As an example:
 
 - your master has in the current default state a dynamic ip address `192.168.1.56`
-- but during the play it will eventually receive a static ip address `192.168.1.200`
+- but during the play it will eventually receive a static ip address `192.168.1.200` if defined so.
 - this requires you to either
-  - to have a dedicated inventory e.g. `hosts.tmp.bootstrap.ini`, which only has a temporary usage and the exact **same layout** as the *default* inventory file. You can then run the following command, from the top-level of this project: `ansible-playbook playbooks/0a-bootstrap.yml -i inventory/hosts.tmp.bootstrap.ini -k`
-  - or you type the current ips into the `hosts.ini` and change them to their specific static target ips, after you have played this playbook once.
-- **What needs to be done from your side?**
+  - to have a dedicated inventory e.g. `hosts.tmp.bootstrap.ini`, which only has a temporary usage and the exact **same layout** as the *default* inventory file. You can then run the following command, from the top-level of this project (but check the following advices first please): `ansible-playbook playbooks/0a-bootstrap.yml -i inventory/hosts.tmp.bootstrap.ini -k`
+- **What needs to be done from your side upfront?**
   - we need to define for ourselves a list of **target ips** for the devices of our cluster. Something like the following:   
   ```[bash]
   for host `kube-r64-000` the target ip is `192.168.1.200`
@@ -39,6 +38,9 @@ This playbook installs further networking conditions and packages on the hosts, 
 It **must** be executed with the **default inventory** like so:
 
 `ansible-playbook playbooks/0b-bootstrap.yml -k`
+
+**What needs to be done upfront?**
+- You should be mostly setup. Please re-check the variables under [inventory/group_vars/all/all.yml](../inventory/group_vars/all/all.yml).
 
 ## 1-cluster-setup.yml
 
