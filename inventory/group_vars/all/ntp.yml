@@ -1,2 +1,0 @@
----
-ntp_pri_domain_name: "{{ kube_primary_domain }}"

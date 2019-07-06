@@ -1,6 +1,0 @@
----
-# Defines hostname of server
-apt_cacher_server: "{{ k8s_master | default(None) or groups['kube_master'][0] }}"
-
-# Defines if apt-caching should be used for clients
-enable_apt_caching: true
