@@ -6,7 +6,8 @@
   become: true
   register: _current_version_output
 
-- debug:
+- name: Current dhcpcd version
+  debug:
     # reduce by 'dhcpcd ' substring and keep pure version number
     msg: "{{ _current_version_output['stdout'].split(' ')[1] }}"
   register: _current_version
