@@ -21,11 +21,13 @@
       command: "/usr/bin/docker --version"
       register: _docker_version
       ignore_errors: false # errors can NOT be ignored here, as playbook depends on Docker-CE
+      changed_when: false
     
     - debug:
-        var: _docker_version
+        msg: "Current Docker version is {{ _docker_version['stdout'] }}"
+      changed_when: false
 
-    - name: Ensuring docker Service Is Started and Enabled On Boot
+    - name: Ensuring Docker Service Is Started and Enabled On Boot
       service:
         name: docker
         state: started
