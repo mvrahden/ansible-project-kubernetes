@@ -5,7 +5,7 @@
     name: [ 'vlan' ]
     state: present
     force: yes
-  when: _networking_use_vlan
+  when: networking_use_vlan
 
 - name: Setup Raspbian (dhcpcd.conf)
   include_tasks:

@@ -19,7 +19,6 @@
   vars:
     _interface_profiles: "{{ interface_profiles | mandatory }}"
     _interfaces: "{{ network_interfaces }}"
-    _networking_use_vlan: "{{ networking_use_vlan }}" # variable can be inferred via dot-notation in interface profiles (".")
   when: ansible_os_family == "Debian"
     and 'interfaces' in subtasks
 
