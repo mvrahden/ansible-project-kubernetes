@@ -3,9 +3,13 @@
   shell: kubeadm version
   register: _kubeadm_version
   ignore_errors: true # errors can be ignored here, as we use this variable just to uninstall
+  changed_when: false
+  failed_when: false
 
-- debug:
-    var: _kubeadm_version
+- name: Kubernetes Version Check
+  debug:
+    msg: "{{ ('Version:' + _kubeadm_version['stdout']) if _kubeadm_version['stdout'] != '' else _kubeadm_version['stderr'] }}"
+  changed_when: false
 
 - name: If kubeadm exists, reset it
   command: kubeadm reset -f # remove '-f' for lower K8s Versions (< v1.11.0)
