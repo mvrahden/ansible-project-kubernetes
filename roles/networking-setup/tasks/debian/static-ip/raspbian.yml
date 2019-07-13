@@ -10,4 +10,4 @@
     mode: 0644
     backup: true
   become: true
-  register: _static_ip
+  register: _interface_profiles_status

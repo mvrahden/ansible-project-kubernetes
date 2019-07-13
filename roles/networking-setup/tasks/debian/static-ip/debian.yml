@@ -30,15 +30,16 @@
   become: true
   register: _static_ip_dhcpcd
 
-- name: Check whether static ip files have changed
-  shell: echo "{{ _static_ip_interfaces['changed'] or _static_ip_NetworkManager['changed'] or _static_ip_dhcpcd['changed'] }}"
+- name: Check whether interface profile files have changed
+  debug:
+    msg: "{{ _static_ip_interfaces['changed'] or _static_ip_NetworkManager['changed'] or _static_ip_dhcpcd['changed'] }}"
   # is "True" when at least one state 'changed'
-  # "_static_ip" variable is single point of truth
-  register: _static_ip
-  changed_when: _static_ip.stdout != "False"
+  # "_interface_profiles_status" variable is single point of truth
+  register: _interface_profiles_status
+  changed_when: _interface_profiles_status['msg'] != false
 
 - name: Restart NetworkManager
   service:
     name: NetworkManager
     state: restarted
-  when: _static_ip['changed']
+  when: _interface_profiles_status['changed']|bool

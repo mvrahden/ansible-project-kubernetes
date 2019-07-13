@@ -49,4 +49,6 @@
   async: 1
   poll: 0
   when: >
-    _reboot
+    (_hostname['changed']|default(false))
+    or (_hostsfile['changed']|default(false))
+    or (_interface_profiles_status['changed']|default(false))
