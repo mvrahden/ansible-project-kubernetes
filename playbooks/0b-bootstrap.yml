@@ -22,7 +22,6 @@
       domain: "{{ kube_primary_domain }}"
       network_interfaces: 
         - "{{ kube_wired_interface }}"
-      reboot: true
 
 - name: Setup further common packages (ntp, apt-cache-ng)
   hosts: kube_cluster

@@ -20,4 +20,3 @@
       network_interfaces: 
         - "{{ kube_wired_interface }}"
       interface_profiles: "{{ kube_interface_profiles }}"
-      reboot: true

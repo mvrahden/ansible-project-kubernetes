@@ -42,9 +42,14 @@
     ansible_os_family == "Debian"
     and 'netfilter' in subtasks
 
+- debug:
+    msg: "{{ item }}"
+  with_items:
+    - "hostname status: {{ _hostname | default('None') }}"
+    - "hostfile status: {{ _hostsfile | default('None') }}"
+    - "network interfaces status: {{ _interface_profiles_status | default('None') }}"
+
 - name: Reboot
-  vars:
-    _reboot: "{{ reboot }}"
   shell: sleep 5 && reboot
   async: 1
   poll: 0
