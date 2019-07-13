@@ -20,7 +20,7 @@
 - debug:
     var: _iptables_definitions
 
-- name: Configuring IPTables
+- name: Configuring iptables
   iptables:
     table: "{{ item['table'] | default(omit) }}"
     chain: "{{ item['chain'] | default(omit) }}"
@@ -32,13 +32,9 @@
     state: "{{ item['state'] | default(omit) }}"
   become: true
   register: _iptables_configured
-  tags:
-    - rpi-iptables
   with_items: "{{ _iptables_definitions }}"
 
 - name: Saving IPTables Rules
   command: service netfilter-persistent save
   become: true
-  tags:
-    - rpi-iptables
   when: _iptables_configured['changed']
