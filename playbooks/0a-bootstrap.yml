@@ -14,7 +14,7 @@
   pre_tasks:
   roles:
     - role: initialization-tasks
-      additional_packages: [ 'dnsutils', 'vim' ]
+      additional_packages: [ 'dnsutils' ]
     - role: networking-setup  # triggers a reboot
       subtasks: [ 'interfaces' ]
       network_interfaces: 
