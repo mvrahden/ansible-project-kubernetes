@@ -1,12 +1,16 @@
+[debian-base]: https://github.com/mvrahden/ansible-project-debian-base-setup
+
 # Some instructions
 
-These playbooks assume, that you played the `mvrahden/ansible-project-debian-base-setup`-playbook to homogenize your devices before running this playbook.
+These playbooks assume, that you played the [debian-base-setup][debian-base]-playbook to homogenize your devices before running this playbook.
 
-It is a setup in 3 consecutive Steps:
+## About this playbook bundle
 
-- 0a-bootstrap - static ips
-- 0b-bootstrap - hostnames and necessary packages
-- 1-cluster-setup - actual kubernetes install
+This playbook bundle is a setup in 3 consecutive Steps:
+
+- **0a-bootstrap** - sets static ips
+- **0b-bootstrap** - hostnames and necessary packages
+- **1-cluster-setup** - actual kubernetes install
 
 ## 0a-bootstrap.yml
 
