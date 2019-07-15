@@ -1,3 +1,5 @@
+[debian-base]: https://github.com/mvrahden/ansible-project-debian-base-setup
+
 # Deploy a Kubernetes Cluster
 
 ![social-banner](https://github.com/mvrahden/openclusters/raw/22133c21f7b10a46d4555dd21455f9932b34d00e/images/social-preview-color.png)
@@ -13,11 +15,12 @@ This Ansible project was created to ensure an automated and reproducible process
   - For your **Intel NUC** this could be [this Ubuntu Server image](http://cdimage.ubuntu.com/ubuntu/releases/19.04/release/ubuntu-19.04-server-amd64.iso) or [check other releases](https://ubuntu.com/download/server).
   - For your **Rock64** this could be [this minimal debian image](https://github.com/ayufan-rock64/linux-build/releases/download/0.8.3/stretch-minimal-rock64-0.8.3-1141-arm64.img.xz) or [check other releases](https://github.com/ayufan-rock64/linux-build/releases/).
   - For your **Raspberry Pi** this could be [Raspbian Lite](https://downloads.raspberrypi.org/raspbian_lite_latest).
+- homogenize your devices so you can expect a consistent behavior. To achieve this, use e.g. this playbook bundle [debian-base-setup][debian-base].
 
 ## What it does
 
-This Ansible project sets up a working kubernetes environment on your cluster of host machines.
-It can be configured with an overlay network, such as weave-net or coreos/flannel (defaults to: flannel).
+This Ansible project sets up a working **Kubernetes** environment on your cluster of host machines.
+It can be configured with an overlay network, such as **weave-net** or **coreos/flannel** (defaults to: flannel).
 
 ## How it works
 

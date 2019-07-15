@@ -24,9 +24,9 @@ As an example:
 - **What needs to be done from your side upfront?**
   - we need to define for ourselves a list of **target ips** for the devices of our cluster. Something like the following:   
   ```[bash]
-  for host `kube-r64-000` the target ip is `192.168.1.200`
-  for host `kube-r64-001` the target ip is `192.168.1.201`
-  for host `kube-r64-002` the target ip is `192.168.1.202`
+  for host 'kube-r64-000' the target ip is '192.168.1.200'
+  for host 'kube-r64-001' the target ip is '192.168.1.201'
+  for host 'kube-r64-002' the target ip is '192.168.1.202'
   ...
   ```
   - Make sure these ips are vacant in your network, as they will be statically defined.
@@ -44,6 +44,7 @@ It **must** be executed with the **default inventory** like so:
 `ansible-playbook playbooks/0b-bootstrap.yml -k`
 
 **What needs to be done upfront?**
+
 - You should be mostly setup. Please re-check the variables under [inventory/group_vars/all/all.yml](../inventory/group_vars/all/all.yml).
 
 ## 1-cluster-setup.yml
