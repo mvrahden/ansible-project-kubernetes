@@ -24,9 +24,15 @@
     state: absent
   ignore_errors: true
 
-- name: Remove admin.conf file (as it is checked by )
+- name: Remove admin.conf file (as it is checked by kubernetes role)
   file:
     path: /etc/kubernetes/admin.conf
+    state: absent
+  become: true
+
+- name: Remove Apt-Sources List
+  file:
+    path: /etc/apt/sources.list.d/apt_kubernetes_io.list
     state: absent
   become: true
 

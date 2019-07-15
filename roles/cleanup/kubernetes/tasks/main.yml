@@ -6,3 +6,9 @@
 - name: Remove Flannel Artifacts
   include_tasks: 
     file: flannel-artifacts.yml
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  become: true
+      
