@@ -3,5 +3,5 @@
   name: mvrahden/ansible-ntp
 - src: https://github.com/mrlesmithjr/ansible-apt-cacher-ng.git
   name: mvrahden/ansible-apt-cacher-ng
-- src: https://github.com/mvrahden/ansible-kubernetes.git
+- src: mvrahden.kubernetes
   name: mvrahden/ansible-k8s
