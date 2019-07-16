@@ -1,12 +1,20 @@
 [debian-base]: https://github.com/mvrahden/ansible-project-debian-base-setup
 
-# Deploy a Kubernetes Cluster
+# Deploy a Kubernetes Cluster <!-- omit in toc -->
 
 ![social-banner](https://github.com/mvrahden/openclusters/raw/22133c21f7b10a46d4555dd21455f9932b34d00e/images/social-preview-color.png)
 
-## Motivation
+## Motivation <!-- omit in toc -->
 
 This Ansible project was created to ensure an automated and reproducible process of setting up a Kubernetes Cluster environment on a defined list of host machines.
+
+## Table of Contents <!-- omit in toc -->
+
+- [Prerequisites](#Prerequisites)
+- [What it does](#What-it-does)
+- [How it works](#How-it-works)
+- [License](#License)
+- [Author Information](#Author-Information)
 
 ## Prerequisites
 
