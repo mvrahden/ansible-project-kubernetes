@@ -1,13 +1,13 @@
 ---
 - name: Detect network interfaces
-  shell: ip a show
+  command: ip a show
   register: _interfaces
 
 # - debug:
 #     var: _interfaces
 
 - name: Remove Flannel devices
-  shell: ip link delete flannel.1
+  command: ip link delete flannel.1
   become: true
   when: >
         'flannel.1' in _interfaces['stdout']

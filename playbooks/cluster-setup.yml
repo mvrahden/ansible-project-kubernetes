@@ -23,7 +23,7 @@
       register: _docker_version
       ignore_errors: false # errors can NOT be ignored here, as playbook depends on Docker-CE
       changed_when: false
-    
+
     - debug:
         msg: "Current Docker version is {{ _docker_version['stdout'] }}"
       changed_when: false
@@ -97,14 +97,14 @@
       become: true
 
     - name: Apply Admin ServiceAccount and ClusterRoleBinding
-      shell: >
-               kubectl --kubeconfig {{ k8s_admin_config }} \
-               apply -f /tmp/kubernetes-admin.yml
+      command: >
+        kubectl --kubeconfig {{ k8s_admin_config }} \
+        apply -f /tmp/kubernetes-admin.yml
 
     - name: Apply Dashboard
-      shell: >
-               kubectl --kubeconfig {{ k8s_admin_config }} \
-               apply -f "{{ k8s_dashboard }}"
+      command: >
+        kubectl --kubeconfig {{ k8s_admin_config }} \
+        apply -f "{{ k8s_dashboard }}"
 
 - hosts: kube_master
   name: Get necessary information about Kubernetes and Dashboard
@@ -117,13 +117,13 @@
     - name: debug
       debug:
         msg: "{{ _kubernetes_admin_secret_name }}"
-      when: _kubernetes_admin_secret_name['stderr'] != ""
+      when: _kubernetes_admin_secret_name['stderr']
 
     - name: Describe Secret for Service Account
-      shell: >
-             kubectl --kubeconfig {{ k8s_admin_config }} \
-             -n kube-system \
-             describe secret {{ _kubernetes_admin_secret_name['stdout'] }}
+      command: >
+        kubectl --kubeconfig {{ k8s_admin_config }} \
+        -n kube-system \
+        describe secret {{ _kubernetes_admin_secret_name['stdout'] }}
       become: true
       register: _kubernetes_admin_token
 

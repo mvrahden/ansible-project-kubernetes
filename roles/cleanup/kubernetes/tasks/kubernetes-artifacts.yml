@@ -8,7 +8,7 @@
 
 - name: Kubernetes Version Check
   debug:
-    msg: "{{ ('Version:' + _kubeadm_version['stdout']) if _kubeadm_version['stdout'] != '' else _kubeadm_version['stderr'] }}"
+    msg: "{{ ('Version:' + _kubeadm_version['stdout']) if _kubeadm_version['stdout'] else _kubeadm_version['stderr'] }}"
   changed_when: false
 
 - name: If kubeadm exists, reset it
@@ -19,8 +19,8 @@
 - name: Uninstall all kubernetes-relevant packages
   apt:
     name: "{{ k8s_debian_packages }}"
-    autoremove: yes
-    force: yes
+    autoremove: true
+    force: true
     state: absent
   ignore_errors: true
 
@@ -37,13 +37,11 @@
   become: true
 
 - name: Remove Kubernetes and etcd artifacts
-  shell: rm -{{ item.flags}} {{ item.target }}
+  file:
+    path: "{{ item }}"
+    state: absent
   become: true
   with_items:
-    - flags: rf
-      target: /etc/kubernetes/*
-    - flags: rf
-      target: /var/lib/kubelet/*
-    - flags: rf
-      target: /var/lib/etcd/member
-  ignore_errors: true
+    - /etc/kubernetes/*
+    - /var/lib/kubelet/*
+    - /var/lib/etcd/member

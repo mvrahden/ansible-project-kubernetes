@@ -1,14 +1,18 @@
 ---
 - name: Remove Kubernetes Artifacts
-  include_tasks: 
+  include_tasks:
     file: kubernetes-artifacts.yml
 
 - name: Remove Flannel Artifacts
-  include_tasks: 
+  include_tasks:
     file: flannel-artifacts.yml
 
 - name: Update apt cache
   apt:
-    update_cache: yes
+    update_cache: true
+    autoclean: true
+    autoremove: true
+    cache_valid_time: 86400
+    force: true
+    force_apt_get: true
   become: true
-      
