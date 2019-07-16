@@ -15,8 +15,3 @@
   roles:
     - role: initialization-tasks
       additional_packages: [ 'dnsutils' ]
-    - role: networking-setup  # triggers a reboot
-      subtasks: [ 'interfaces' ]
-      network_interfaces: 
-        - "{{ kube_wired_interface }}"
-      interface_profiles: "{{ kube_interface_profiles }}"

@@ -1,6 +1,0 @@
----
-# List of interfaces that will be configured
-network_interfaces: [ 'eth0' ]
-
-# are vlan interfaces being configured? (will install vlan package)
-networking_use_vlan: false
