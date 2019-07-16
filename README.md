@@ -13,6 +13,7 @@ This Ansible project was created to ensure an automated and reproducible process
 - [Prerequisites](#Prerequisites)
 - [What it does](#What-it-does)
 - [How it works](#How-it-works)
+  - [Playbook: `playbooks/cluster-setup.yml`](#Playbook-playbookscluster-setupyml)
 - [License](#License)
 - [Author Information](#Author-Information)
 
@@ -32,13 +33,24 @@ It can be configured with an overlay network, such as **weave-net** or **coreos/
 
 ## How it works
 
-The Ansible project contains multiple playbooks, each with its specific purpose.
-The bootstrap process (which tries to setup the networking and other needed packages) is split into two playbooks.
-The first bootstrap-playbook guarantees **static IPs** for the host machines, as after a clean install host machines will fallback to a dynamically allocated IP via DHCP.
-The second bootstrap-playbook then goes on with **guaranteed IPs** and **sets hostnames** and **installs further packages**.
-To know more on how to play them, please read [this README-file](./playbooks/README.md)
+This playbook bundle assumes, that you have played the [debian-base-setup][debian-base]-playbook bundle to homogenize your devices prior to running this playbook.
 
-After the plays have been successfully executed, you'll find two files inside the `dist/`-directory.
+### Playbook: `playbooks/cluster-setup.yml`
+
+This playbook disables swap memory, checks the availability of Docker-CE and fully removes any Kubernetes artifacts and reinstalls Kubernetes from the ground.
+
+It **must** be executed with the **default inventory** like so:
+
+`ansible-playbook playbooks/cluster-setup.yml -k`
+
+**What needs to be done upfront?**
+
+- You should be mostly setup. Please re-check the variables under [inventory/group_vars/all/all.yml](../inventory/group_vars/all/all.yml).
+
+**What can be done afterwards?**
+
+Note that after a successful execution of the playbook, you can find two files inside the `dist/`-directory.
+These files will be overwritten at the end of every execution of this playbook, to ensure that they are up-to-date.
 
 - `dist/admin.conf` - gives you the content of the cluster admin configuration (also known as **kubeconfig**).
   Copy the content of this file into the file `~/.kube/config` of your local control machine and then execute `kubectl proxy` to initiate a successful binding of your control machine to the cluster.
