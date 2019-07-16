@@ -3,12 +3,13 @@
   gather_facts: false
   any_errors_fatal: true
   tasks:
-    - name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
-      wait_for:
-        port: 22
-        host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
-        search_regex: OpenSSH
-        delay: 10
+    - name: Disabling Swap
+      # Kubernetes dislikes swap memory
+      service:
+        name: dphys-swapfile
+        enabled: false
+        state: stopped
+      become: true
 
 - hosts: kube_cluster
   name: Check Docker-CE availability
