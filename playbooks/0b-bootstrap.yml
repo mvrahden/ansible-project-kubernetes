@@ -29,17 +29,3 @@
         delay: 5
         timeout: 180
 
-    - name: Disabling Swap
-      # Kubernetes dislikes swap memory
-      service:
-        name: dphys-swapfile
-        enabled: false
-        state: stopped
-      become: true
-
-  roles:
-    - role: mvrahden/ansible-ntp
-      ntp_pri_domain_name: "{{ kube_primary_domain }}"
-    - role: mvrahden/ansible-apt-cacher-ng
-      apt_cacher_server: "{{ k8s_master | default(None) or groups['kube_master'][0] }}"
-      enable_apt_caching: true
