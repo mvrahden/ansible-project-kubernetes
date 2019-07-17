@@ -14,7 +14,7 @@ k8s_cluster_init_skip_ca_verification: true
 # see: https://storage.googleapis.com/kubernetes-helm/
 k8s_helm_architecture: "{{ target_node_arch }}"
 
-k8s_helm_install: true
+k8s_helm_install: false
 
 k8s_helm_version: 2.14.0
 
